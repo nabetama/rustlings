@@ -6,16 +6,22 @@
 // Execute `rustlings hint generics2` or use the `hint` watch subcommand for a
 // hint.
 
-// I AM NOT DONE
-
-struct Wrapper {
-    value: u32,
+// 任意の型Tを キー：`value` で保持する構造体
+struct Wrapper<T> {
+    value: T,
 }
 
-impl Wrapper {
-    pub fn new(value: u32) -> Self {
+// 任意の型Tに対して, Wrapper<T>型のインスタンスを生成する関数
+impl<T> Wrapper<T> {
+    pub fn new(value: T) -> Self {
         Wrapper { value }
     }
+}
+
+#[cfg(test)]
+#[derive(PartialEq, Debug)]
+struct Dummy {
+    value: i32,
 }
 
 #[cfg(test)]
@@ -29,6 +35,31 @@ mod tests {
 
     #[test]
     fn store_str_in_wrapper() {
-        assert_eq!(Wrapper::new("Foo").value, "Foo");
+        assert_eq!(Wrapper::new("Foo".to_string()).value, "Foo");
+    }
+
+    #[test]
+    fn store_char_in_wrapper() {
+        assert_eq!(Wrapper::new('M').value, 'M');
+    }
+
+    #[test]
+    fn store_bool_in_wrapper() {
+        assert_eq!(Wrapper::new(true).value, true);
+    }
+
+    #[test]
+    fn store_tuple_in_wrapper() {
+        assert_eq!(Wrapper::new((1, 2)).value, (1, 2));
+    }
+
+    #[test]
+    fn store_vec_in_wrapper() {
+        assert_eq!(Wrapper::new(vec![1, 2, 3]).value, vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn store_dummy() {
+        assert_eq!(Wrapper::new(Dummy { value: 42 }).value, Dummy { value: 42 });
     }
 }
